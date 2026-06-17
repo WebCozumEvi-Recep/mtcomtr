@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MagixTouch — Tekli Ürün Satış Platformu</title>
-    <meta name="description" content="MagixTouch, her ürün için özel tekli satış sitesi oluşturan modern satış platformu.">
+    @php
+        $seoTitle = \App\Models\Setting::val('seo_title') ?: 'MagixTouch — Tekli Ürün Satış Platformu';
+        $seoDesc = \App\Models\Setting::val('seo_description') ?: 'MagixTouch, her ürün için özel tekli satış sitesi oluşturan modern satış platformu.';
+    @endphp
+    <title>{{ $seoTitle }}</title>
+    <meta name="description" content="{{ $seoDesc }}">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDesc }}">
     <link rel="icon" href="/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>

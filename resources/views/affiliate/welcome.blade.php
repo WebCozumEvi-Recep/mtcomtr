@@ -567,7 +567,7 @@
         <div class="container">
             <div class="header-content">
                 <a href="/" class="logo">
-                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) ?: asset('/images/landing/logo_full.png') }}" alt="TEKSAT Logo" style="filter: brightness(0) invert(1); max-height: 38px; object-fit: contain;">
+                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) }}" alt="TEKSAT Logo" style="filter: brightness(0) invert(1); max-height: 38px; object-fit: contain;">
                 </a>
                 <div class="header-actions">
                     <a href="{{ route('affiliate.login') }}" class="btn btn-secondary"><i class="fa-solid fa-right-to-bracket"></i> Giriş Yap</a>
@@ -778,7 +778,7 @@
         <div class="container">
             <div class="footer-content">
                 <a href="/" class="logo">
-                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) ?: asset('/images/landing/logo_full.png') }}" alt="TEKSAT Logo" style="filter: brightness(0) invert(1); height: 30px; object-fit: contain;">
+                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) }}" alt="TEKSAT Logo" style="filter: brightness(0) invert(1); height: 30px; object-fit: contain;">
                 </a>
                 <div class="footer-links">
                     <a href="#nasil-calisir">Nasıl Çalışır?</a>

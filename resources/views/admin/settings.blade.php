@@ -125,6 +125,17 @@
             <h3 class="text-lg font-bold text-slate-900 mb-4 border-b border-slate-100 pb-2">SEO & Analitik Doğrulamaları</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">SEO Başlığı (Site Title)</label>
+                    <input type="text" name="seo_title" value="{{ $settings['seo_title'] ?? '' }}" placeholder="Örn: MagixTouch — Tekli Ürün Satış Platformu" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition">
+                    <p class="text-[11px] font-medium text-slate-400 mt-1">Kurumsal vitrin sayfasının ve tarayıcı sekmesinin varsayılan başlığı. Boş bırakılırsa varsayılan başlık kullanılır.</p>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">SEO Açıklaması (Meta Description)</label>
+                    <input type="text" name="seo_description" value="{{ $settings['seo_description'] ?? '' }}" placeholder="Arama sonuçlarında görünecek kısa açıklama" class="w-full px-4 py-2 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition">
+                </div>
+
+                <div class="md:col-span-2">
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Google Site Verification (Meta content değeri)</label>
                     <input type="text" name="google_site_verification" value="{{ $settings['google_site_verification'] ?? '' }}" placeholder="Örn: XyZ123_aBc-456_defGHI..." class="w-full px-4 py-2 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition">
                     <p class="text-[11px] font-medium text-slate-400 mt-1">Sitenizin header kısmına meta etiketi olarak Search Console onayı için eklenir.</p>

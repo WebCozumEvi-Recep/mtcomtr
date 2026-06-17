@@ -150,7 +150,7 @@
     >
         <div class="h-20 flex items-center px-8 border-b border-white/5 flex-shrink-0">
             @php 
-                $siteLogo = \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) ?: asset('/images/landing/logo_full.png'); 
+                $siteLogo = \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')); 
             @endphp
             <div class="flex flex-col gap-1 w-full">
                 <img src="{{ $siteLogo }}" class="h-8 object-contain self-start" style="filter: brightness(0) invert(1);" alt="Site Logo">

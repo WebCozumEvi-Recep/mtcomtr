@@ -41,7 +41,7 @@
         <!-- Logo Header -->
         <div class="text-center mb-8">
             @php 
-                $siteLogo = \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) ?: asset('/images/landing/logo_full.png'); 
+                $siteLogo = \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')); 
             @endphp
             <div class="inline-flex justify-center items-center mb-4">
                 <img src="{{ $siteLogo }}" class="h-12 object-contain" style="filter: brightness(0) invert(1);" alt="Site Logo">

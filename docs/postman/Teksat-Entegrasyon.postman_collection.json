@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Teksat — Harici entegrasyon",
+		"description": "Domain, ürün, paket listeleri ve imzalı sipariş. domain_id veya api_domain_id. Değişkenler: baseUrl, apiKey, callerHost, domainId, apiDomainId, apiProductId. Örnek gövdede cargo_tracking_no doluysa sipariş kargoya_verildi + yurtici olarak kaydedilir.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{ "key": "baseUrl", "value": "https://ORNEK.teksat.com.tr/api" },
+		{ "key": "apiKey", "value": "" },
+		{ "key": "callerHost", "value": "api.sizin-sirketiniz.com" },
+		{ "key": "domainId", "value": "12" },
+		{ "key": "apiDomainId", "value": "FUNNEL-TR-01" },
+		{ "key": "apiProductId", "value": "EXT-PROD-88" }
+	],
+	"item": [
+		{
+			"name": "1 — Domain listesi",
+			"request": {
+				"method": "GET",
+				"header": [
+					{ "key": "Authorization", "value": "Bearer {{apiKey}}", "type": "text" },
+					{ "key": "X-Teksat-Source-Host", "value": "{{callerHost}}", "type": "text" }
+				],
+				"url": "{{baseUrl}}/v1/integration/domains"
+			}
+		},
+		{
+			"name": "2 — Ürün listesi (api_domain_id)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{ "key": "Authorization", "value": "Bearer {{apiKey}}", "type": "text" },
+					{ "key": "X-Teksat-Source-Host", "value": "{{callerHost}}", "type": "text" }
+				],
+				"url": "{{baseUrl}}/v1/integration/products?api_domain_id={{apiDomainId}}"
+			}
+		},
+		{
+			"name": "3 — Paket (offer) listesi (api_domain_id)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{ "key": "Authorization", "value": "Bearer {{apiKey}}", "type": "text" },
+					{ "key": "X-Teksat-Source-Host", "value": "{{callerHost}}", "type": "text" }
+				],
+				"url": "{{baseUrl}}/v1/integration/offers?api_domain_id={{apiDomainId}}"
+			}
+		},
+		{
+			"name": "4 — Sipariş oluştur (HMAC pre-request)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"const apiKey = pm.collectionVariables.get('apiKey');",
+							"const rawBody = pm.request.body ? pm.request.body.raw : '';",
+							"if (!rawBody) { console.warn('Raw JSON body bos'); }",
+							"const ts = Math.floor(Date.now() / 1000).toString();",
+							"const stringToSign = ts + '\\n' + rawBody;",
+							"const signature = CryptoJS.HmacSHA256(stringToSign, apiKey).toString(CryptoJS.enc.Hex);",
+							"pm.request.headers.upsert({ key: 'X-Teksat-Timestamp', value: ts });",
+							"pm.request.headers.upsert({ key: 'X-Teksat-Signature', value: signature });"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Content-Type", "value": "application/json", "type": "text" },
+					{ "key": "X-Teksat-Source-Host", "value": "{{callerHost}}", "type": "text" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"api_domain_id\": \"{{apiDomainId}}\",\n  \"api_product_id\": \"{{apiProductId}}\",\n  \"name\": \"Test Musteri\",\n  \"phone\": \"05550001122\",\n  \"city\": \"Istanbul\",\n  \"district\": \"Kadikoy\",\n  \"address\": \"Test adres satiri\",\n  \"unit_price\": 199.90,\n  \"total_price\": 199.90,\n  \"quantity\": 1,\n  \"api_offer_id\": \"\",\n  \"api_order_id\": \"EXT-ORD-7788\",\n  \"payment_method\": \"cod\",\n  \"order_date\": \"2026-05-12 10:00:00\",\n  \"email\": \"test@ornek.com\",\n  \"cargo_tracking_no\": \"YT123456789\"\n}"
+				},
+				"url": "{{baseUrl}}/v1/integration/orders"
+			}
+		}
+	]
+}

@@ -1,0 +1,149 @@
+stages:
+  - deploy
+
+variables:
+  APP_ENV: production
+  DEPLOY_PATH: /var/www/teksat
+  PHP_VERSION: "8.3"
+
+# Deploy Stage - Production sunucuya deploy ve build
+deploy_production:
+  stage: deploy
+  only:
+    - main
+  script:
+    # --- 1️⃣ Mevcut dizini kontrol et ve dosyaları deploy path'ine kopyala
+    - |
+      echo "=== Mevcut Dizin Bilgileri ==="
+      pwd
+      ls -la
+      echo "=============================="
+
+      # composer.json'ı kontrol et
+      if [ ! -f composer.json ]; then
+        echo "❌ HATA: composer.json bulunamadı!"
+        echo "Mevcut dizin: $(pwd)"
+        exit 1
+      fi
+
+      echo "✅ composer.json bulundu, rsync ile dosyalar senkronize ediliyor..."
+
+      # rsync ile deploy path'ini senkronize et (kalıcı klasörleri koru)
+      mkdir -p $DEPLOY_PATH
+      rsync -rz --delete --no-perms --no-owner --no-group --omit-dir-times --no-times \
+        --exclude=".git/" \
+        --exclude="node_modules/" \
+        --exclude="vendor/" \
+        --exclude="storage/" \
+        --exclude="bootstrap/cache/" \
+        --exclude="public/storage/" \
+        --exclude="public/uploads/" \
+        ./ "$DEPLOY_PATH"/
+
+      echo "✅ Dosyalar kopyalandı"
+      echo "Kopyalama sonrası kontrol:"
+      ls -la $DEPLOY_PATH | head -20
+
+    # --- 2️⃣ Deploy path'ine git ve kontrol et
+    - cd $DEPLOY_PATH
+    - echo "=== Deploy Path İçeriği ==="
+    - ls -la
+    - echo "composer.json kontrolü:"
+    - test -f composer.json && echo "✅ composer.json var" || echo "❌ composer.json YOK!"
+    - echo "============================"
+
+    # --- 3️⃣ env.production'ı .env olarak kopyala
+    - |
+      if [ -f env.production ]; then
+        echo "✅ env.production bulundu, .env olarak kopyalanıyor..."
+        cp env.production .env
+        echo "✅ .env dosyası oluşturuldu"
+      else
+        echo "⚠️  env.production bulunamadı, .env.example kullanılıyor..."
+        if [ -f .env.example ]; then
+          cp .env.example .env
+          echo "✅ .env dosyası .env.example'dan oluşturuldu"
+        fi
+      fi
+
+    # --- 4️⃣ Laravel key kontrolü
+    - |
+      if [ ! -f .env ]; then
+        echo "❌ .env bulunamadı, deploy durduruldu"
+        exit 1
+      fi
+      echo "✅ .env dosyası mevcut"
+
+    # --- 5️⃣ Laravel runtime dizinlerini garanti et + izinleri hazırla
+    - |
+      mkdir -p \
+        storage/framework/views \
+        storage/framework/cache/data \
+        storage/framework/sessions \
+        storage/framework/testing \
+        storage/logs \
+        storage/app/public \
+        bootstrap/cache
+      chmod -R ug+rwX storage bootstrap/cache || true
+      echo "✅ Laravel runtime dizinleri hazır"
+
+    # --- 6️⃣ Composer (scripts kapalı; artisan adımları sonra)
+    - composer install --no-dev --prefer-dist --optimize-autoloader --no-scripts
+
+    # --- 6.1️⃣ Composer scriptlerini kontrollü çalıştır
+    - |
+      mkdir -p /tmp/teksat-artisan-cache
+      LOG_CHANNEL=stderr \
+      LOG_STACK=stderr \
+      APP_CONFIG_CACHE=/tmp/teksat-artisan-cache/config.php \
+      APP_PACKAGES_CACHE=/tmp/teksat-artisan-cache/packages.php \
+      APP_SERVICES_CACHE=/tmp/teksat-artisan-cache/services.php \
+      APP_EVENTS_CACHE=/tmp/teksat-artisan-cache/events.php \
+      APP_ROUTES_CACHE=/tmp/teksat-artisan-cache/routes.php \
+      VIEW_COMPILED_PATH=/tmp/teksat-artisan-cache/views \
+      php artisan package:discover --ansi
+
+
+
+
+    # --- 7️⃣ Migration (hata durumunda devam et)
+    - |
+      echo "Migration çalıştırılıyor..."
+      php artisan migrate --force || {
+        echo "⚠️  Migration hatası (tablolar zaten mevcut olabilir), devam ediliyor..."
+        php artisan migrate:status
+      }
+
+    # --- 8️⃣ Cache / Optimize
+    - php artisan config:clear
+    - php artisan route:clear
+    - php artisan view:clear
+    - |
+      if [ -w bootstrap/cache ] && [ -w storage/logs ]; then
+        LOG_CHANNEL=stderr LOG_STACK=stderr php artisan optimize
+      else
+        echo "⚠️  bootstrap/cache veya storage/logs yazılabilir değil, optimize adımı atlandı."
+      fi
+
+    # --- 9️⃣ Queue restart (varsa)
+    - php artisan queue:restart || true
+
+    - php artisan storage:link
+    - |
+      chmod -R ug+rwX storage bootstrap/cache || true
+      echo "✅ DEPLOY COMPLETED2"
+
+    - |
+      echo "Permission fix başlıyor..."
+      # Tüm projeyi chown etmek CI runner'da permission hatasına düşüyor.
+      # Sadece Laravel'in yazdığı dizinleri düzelt.
+      chown -R www-data:www-data /var/www/teksat/storage /var/www/teksat/bootstrap/cache || true
+      chmod -R ug+rwX /var/www/teksat/storage /var/www/teksat/bootstrap/cache || true
+      echo "Permission fix tamamlandı"
+  tags:
+    - teksat-deploy-new
+  environment:
+    name: production
+    url: https://yourdomain.com
+  when: on_success
+

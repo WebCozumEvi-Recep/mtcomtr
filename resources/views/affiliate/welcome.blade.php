@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEKSAT Satış Ortaklığı - Kazancınızı Katlayın</title>
+    <title>{{ config('app.name') }} Satış Ortaklığı - Kazancınızı Katlayın</title>
     
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -567,7 +567,7 @@
         <div class="container">
             <div class="header-content">
                 <a href="/" class="logo">
-                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) }}" alt="TEKSAT Logo" style="filter: brightness(0) invert(1); max-height: 38px; object-fit: contain;">
+                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) }}" alt="Logo" style="filter: brightness(0) invert(1); max-height: 38px; object-fit: contain;">
                 </a>
                 <div class="header-actions">
                     <a href="{{ route('affiliate.login') }}" class="btn btn-secondary"><i class="fa-solid fa-right-to-bracket"></i> Giriş Yap</a>
@@ -580,9 +580,9 @@
     <!-- HERO -->
     <section class="hero">
         <div class="container">
-            <span class="section-tag">TEKSAT SATIŞ ORTAKLIĞI</span>
+            <span class="section-tag">{{ strtoupper(config('app.name')) }} SATIŞ ORTAKLIĞI</span>
             <h1>Linkini Paylaş, <span>Yüksek Komisyon</span> Oranlarıyla Kazanmaya Başla!</h1>
-            <p>TEKSAT bünyesindeki yüzlerce yüksek satış hacimli ve popüler ürünü tanıtın. Her başarılı satıştan anında, zahmetsizce hak edişlerinizi alın.</p>
+            <p>{{ config('app.name') }} bünyesindeki yüzlerce yüksek satış hacimli ve popüler ürünü tanıtın. Her başarılı satıştan anında, zahmetsizce hak edişlerinizi alın.</p>
             <div class="hero-btns">
                 <a href="{{ route('affiliate.register') }}" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Hemen Ortak Ol</a>
                 <a href="#kazanc" class="btn btn-secondary"><i class="fa-solid fa-calculator"></i> Kazanç Hesapla</a>
@@ -704,7 +704,7 @@
             <div class="section-header">
                 <span class="section-tag">SÖZLEŞME & SSS</span>
                 <h2>Sıkça Sorulan Sorular</h2>
-                <p>TEKSAT Satış Ortaklığı programı hakkında merak ettiğiniz tüm temel soruların cevapları.</p>
+                <p>{{ config('app.name') }} Satış Ortaklığı programı hakkında merak ettiğiniz tüm temel soruların cevapları.</p>
             </div>
 
             <div class="faq-list">
@@ -778,14 +778,14 @@
         <div class="container">
             <div class="footer-content">
                 <a href="/" class="logo">
-                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) }}" alt="TEKSAT Logo" style="filter: brightness(0) invert(1); height: 30px; object-fit: contain;">
+                    <img src="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_logo')) }}" alt="Logo" style="filter: brightness(0) invert(1); height: 30px; object-fit: contain;">
                 </a>
                 <div class="footer-links">
                     <a href="#nasil-calisir">Nasıl Çalışır?</a>
                     <a href="#kazanc">Kazanç Hesapla</a>
                     <a href="#sss">Sıkça Sorulan Sorular</a>
                 </div>
-                <div class="copyright">© 2026 TekSat - Akıllı Tekli Ürün Satış Altyapısı.</div>
+                <div class="copyright">© {{ date('Y') }} {{ config('app.name') }} - Akıllı Tekli Ürün Satış Altyapısı.</div>
             </div>
         </div>
     </footer>

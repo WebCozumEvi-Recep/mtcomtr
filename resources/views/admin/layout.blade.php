@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Affiliate Sistemi - Teksat Admin')</title>
+    <title>@yield('title', 'Affiliate Sistemi - ' . config('app.name') . ' Admin')</title>
     <!-- Favicon -->
     <link rel="icon" href="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_favicon'), asset('favicon.ico')) }}">
     <!-- Fonts & Bootstrap -->

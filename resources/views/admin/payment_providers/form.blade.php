@@ -16,7 +16,7 @@
         <div class="premium-card p-6 sm:p-8 space-y-6">
             <div>
                 <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Tanım Adı</label>
-                <input type="text" name="name" value="{{ old('name', $provider->name) }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Örn: PayTR - Teksat Hesabı" required>
+                <input type="text" name="name" value="{{ old('name', $provider->name) }}" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-500" placeholder="Örn: PayTR - {{ config('app.name') }} Hesabı" required>
             </div>
 
             <div>

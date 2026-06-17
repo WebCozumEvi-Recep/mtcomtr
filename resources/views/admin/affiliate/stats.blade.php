@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Affiliate İstatistikleri - Teksat Admin')
+@section('title', 'Affiliate İstatistikleri - ' . config('app.name') . ' Admin')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">

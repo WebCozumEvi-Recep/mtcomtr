@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teksat | Admin Panel</title>
+    <title>{{ config('app.name') }} | Admin Panel</title>
     <!-- Dynamic Favicon -->
     <link rel="icon" href="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_favicon'), asset('favicon.ico')) }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">

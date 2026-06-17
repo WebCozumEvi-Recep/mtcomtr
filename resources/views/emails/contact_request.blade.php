@@ -28,7 +28,7 @@
         </table>
         
         <div style="margin-top: 30px; font-size: 12px; color: #888; text-align: center;">
-            Bu e-posta TekSat Tanıtım Sayfası üzerinden otomatik olarak gönderilmiştir.
+            Bu e-posta {{ config('app.name') }} Tanıtım Sayfası üzerinden otomatik olarak gönderilmiştir.
         </div>
     </div>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teksat | Premium Yönetim Erişimi</title>
+    <title>{{ config('app.name') }} | Premium Yönetim Erişimi</title>
     <!-- Dynamic Favicon -->
     <link rel="icon" href="{{ \App\Models\Setting::mediaUrl(\App\Models\Setting::val('site_favicon'), asset('favicon.ico')) }}">
     <!-- Inter Font Collection -->
@@ -119,7 +119,7 @@
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-sm border border-gray-100 mb-6">
                     <svg class="w-8 h-8 text-brand-900" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="miter" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
                 </div>
-                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Teksat<span class="text-brand-500">.</span></h1>
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ config('app.name') }}<span class="text-brand-500">.</span></h1>
             @endif
             <p class="text-slate-500 mt-2 font-medium">Satış sistemine güvenli giriş yapın.</p>
         </div>

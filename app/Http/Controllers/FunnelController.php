@@ -15,7 +15,7 @@ class FunnelController extends Controller
         $host = strtolower($request->getHost());
 
         // Corporate promo page hosts
-        if (in_array($host, ['teksat.com.tr', 'www.teksat.com.tr'], true)) {
+        if (in_array($host, ['teksat.com.tr', 'www.teksat.com.tr', 'magixtouch.com.tr', 'www.magixtouch.com.tr'], true)) {
             if ($this->requestLooksLikeIntegrationApiClient($request)) {
                 return response()->json([
                     'message' => 'Bu adres kurumsal vitrindir; harici sipariş API’si panel uygulama sunucusundaki /api/v1/integration veya /v1/integration yollarındadır. baseUrl’i vitrin alan adıyla karıştırmayın.',
